@@ -24,3 +24,6 @@ POSTGRES_DB_PORT=5432
 POSTGRES_USER=your-db-username
 POSTGRES_PASSWORD=your-db-password
 POSTGRES_HOST=your-db-host-url
+
+
+RENDER_EXTERNAL_HOSTNAME=<domain>
