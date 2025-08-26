@@ -12,8 +12,8 @@ class WindowsCompatibleDropboxStorage(DropboxStorage):
 
         name = name.lstrip("/")
 
-        if name.startswith("media/"):
-            name = name[len("media/"):]
+        if self.root_path and name.startswith(self.root_path + "/"):
+            name = name[len(self.root_path) + 1:]
 
         full_path = os.path.join("/", self.root_path, name) if os.name == "nt" else safe_join(self.root_path, name)
         return full_path.replace("\\", "/").replace("//", "/")
@@ -24,6 +24,9 @@ class WindowsCompatibleDropboxStorage(DropboxStorage):
 
     def url(self, name):
         name = self._full_path(name)
+        if not name.startswith("/"):
+            name = "/" + name
+
         cache_key = self._get_cache_key(name)
         link = cache.get(cache_key)
         if link:
