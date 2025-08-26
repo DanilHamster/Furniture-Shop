@@ -2,6 +2,7 @@ from django import template
 
 register = template.Library()
 
+
 @register.simple_tag
 def query_transform(request, **kwargs):
     updated = request.GET.copy()
@@ -12,12 +13,11 @@ def query_transform(request, **kwargs):
             updated.pop(k, 0)
     return updated.urlencode()
 
+
 @register.simple_tag
 def update_query(request, **kwargs):
     query = request.GET.copy()
     for key, value in kwargs.items():
         query[key] = value
-    query.pop('page', None)
+    query.pop("page", None)
     return query.urlencode()
-
-

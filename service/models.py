@@ -26,21 +26,21 @@ class Item(models.Model):
         max_digits=7,
     )
     description = models.CharField(null=True, blank=True, max_length=255)
-    color = models.ForeignKey(Color, related_name="item_color", on_delete=models.CASCADE)
+    color = models.ForeignKey(
+        Color, related_name="item_color", on_delete=models.CASCADE
+    )
     material = models.ManyToManyField(Material, related_name="item_material")
     count = models.PositiveIntegerField(verbose_name="Count of item")
-    item_class = models.ForeignKey("ItemClass", on_delete=models.CASCADE, related_name="item_class")
-    image = models.ImageField(
-        null=True, blank=True, upload_to="items/itemphoto/"
+    item_class = models.ForeignKey(
+        "ItemClass", on_delete=models.CASCADE, related_name="item_class"
     )
+    image = models.ImageField(null=True, blank=True, upload_to="items/itemphoto/")
     comment = models.ManyToManyField("account.Comment", related_name="items")
 
     def get_image_url(self):
         if self.image:
             return self.image.url
         return "/static/img/placeholder.png"
-
-
 
     def __str__(self):
         return f"Item: {self.name}, Price: {self.price}"

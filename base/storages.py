@@ -27,5 +27,3 @@ class WindowsCompatibleDropboxStorage(DropboxStorage):
         link = super().url(name)
         cache.set(cache_key, link, timeout=4 * 60 * 60)
         return link
-
-

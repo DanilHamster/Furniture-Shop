@@ -27,6 +27,7 @@ class User(AbstractUser):
     avatar = models.ImageField(
         null=True, blank=True, upload_to="accounts/profiles/avatars/"
     )
+
     def get_image_url(self):
         if self.avatar:
             return self.avatar.url
@@ -38,12 +39,12 @@ class Comment(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="comments")
     create = models.DateTimeField(auto_now_add=True)
 
+
 class Cart(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, related_name="cart")
 
     def __str__(self):
         return f"Cart of {self.user.username}"
-
 
     def total_price(self):
         return sum(
@@ -81,5 +82,3 @@ class Buy(models.Model):
     @property
     def get_total_price(self):
         return self.item_price * self.item_quantity
-
-

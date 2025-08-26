@@ -25,7 +25,9 @@ class ItemListView(generic.ListView):
     paginate_by = 9
 
     def get_queryset(self):
-        queryset = Item.objects.select_related("color", "item_class").prefetch_related("material", "comment")
+        queryset = Item.objects.select_related("color", "item_class").prefetch_related(
+            "material", "comment"
+        )
         self.search_form = SearchItemForm(self.request.GET)
         self.filter_form = PriceFilterForm(self.request.GET)
         self.class_filter = FilterClassForm(self.request.GET)
@@ -54,14 +56,12 @@ class ItemListView(generic.ListView):
                 queryset = queryset.filter(price__lte=max_price)
         return queryset
 
-
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
 
         filtered_queryset = self.get_queryset()
         price_bounds = filtered_queryset.aggregate(
-            min_price=Min("price"),
-            max_price=Max("price")
+            min_price=Min("price"), max_price=Max("price")
         )
 
         context["search_form"] = self.search_form
@@ -69,7 +69,7 @@ class ItemListView(generic.ListView):
         context["filter_form"] = PriceFilterForm(
             self.request.GET,
             min_value=price_bounds["min_price"],
-            max_value=price_bounds["max_price"]
+            max_value=price_bounds["max_price"],
         )
         context["class_filter"] = self.class_filter
         return context
@@ -107,28 +107,44 @@ class ItemDetailView(FormMixin, generic.DetailView):
 
 class ItemCreateView(generic.CreateView):
     model = Item
-    fields = ("name", "price", "description", "color", "material", "count", "item_class", "image",)
+    fields = (
+        "name",
+        "price",
+        "description",
+        "color",
+        "material",
+        "count",
+        "item_class",
+        "image",
+    )
     template_name = "service/item_form.html"
     success_url = reverse_lazy("service:item-list")
 
+
 class ItemUpdateView(generic.UpdateView):
     model = Item
-    fields = ("name", "price", "description", "color", "material", "count", "item_class", "image",)
+    fields = (
+        "name",
+        "price",
+        "description",
+        "color",
+        "material",
+        "count",
+        "item_class",
+        "image",
+    )
     template_name = "service/item_form.html"
     success_url = reverse_lazy("service:item-list")
+
 
 class ItemDeleteView(generic.DeleteView):
     model = Item
     success_url = reverse_lazy("service:item-list")
 
+
 class CommentDelete(generic.DeleteView):
     model = Comment
+
     def get_success_url(self):
         item = self.object.items.first()
         return reverse_lazy("service:item-detail", kwargs={"pk": item.pk})
-
-
-
-
-
-

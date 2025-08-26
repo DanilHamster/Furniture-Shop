@@ -5,7 +5,13 @@ from account.views import (
     CartItemUpdateView,
     BuyForm,
     add_to_cart,
-    CartItemDeleteView, SignUpView, ActivateAccountView, ProfileView, ProfileUpdateView, LastBuyDeleteView, BuyListView,
+    CartItemDeleteView,
+    SignUpView,
+    ActivateAccountView,
+    ProfileView,
+    ProfileUpdateView,
+    LastBuyDeleteView,
+    BuyListView,
     BuyInfoDeleteView,
 )
 
@@ -26,8 +32,9 @@ urlpatterns = [
     path("del-item/<int:pk>/", CartItemDeleteView.as_view(), name="del-item"),
     path("profile/", ProfileView.as_view(), name="account-profile"),
     path("profile/update/", ProfileUpdateView.as_view(), name="account-profile-update"),
-    path("last_buy/delete/<int:pk>/", LastBuyDeleteView.as_view(), name="last-buy-delete"),
+    path(
+        "last_buy/delete/<int:pk>/", LastBuyDeleteView.as_view(), name="last-buy-delete"
+    ),
     path("admin/buy_list/", BuyListView.as_view(), name="buy-list"),
     path("admin/del_buy/<int:pk>/", BuyInfoDeleteView.as_view(), name="buy-del"),
-
 ]

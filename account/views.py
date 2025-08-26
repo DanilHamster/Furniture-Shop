@@ -26,7 +26,6 @@ from account.forms import CustomUserCreationForm
 from account.services.token_service import account_activation_token
 
 
-
 logger = logging.getLogger(__name__)
 
 User = get_user_model()
@@ -120,6 +119,7 @@ class CartItemDeleteView(generic.DeleteView):
     def get_success_url(self):
         return reverse_lazy("accounts:cart-acc", kwargs={"pk": self.object.cart.id})
 
+
 class SignUpView(generic.CreateView):
     form_class = CustomUserCreationForm
     template_name = "registration/sign_up.html"
@@ -183,6 +183,7 @@ class ActivateAccountView(View):
 
         return render(request, "registration/activation_invalid.html")
 
+
 class ProfileView(generic.DetailView):
     model = User
     template_name = "accounts/userprofile.html"
@@ -199,6 +200,7 @@ class ProfileUpdateView(generic.UpdateView):
 
     def get_object(self, queryset=None):
         return self.request.user
+
 
 class BuyListView(generic.ListView):
     model = Buy
@@ -219,16 +221,6 @@ class BuyListView(generic.ListView):
         return context
 
 
-
-
-
 class BuyInfoDeleteView(generic.DeleteView):
     model = Buy
     success_url = reverse_lazy("accounts:buy-list")
-
-
-
-
-
-
-

@@ -28,4 +28,3 @@ urlpatterns = [
     path("service/", include("service.urls", namespace="service")),
     path("", index, name="index"),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
-

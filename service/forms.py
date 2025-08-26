@@ -10,7 +10,9 @@ class SearchItemForm(forms.Form):
         max_length=255,
         required=False,
         label="",
-        widget=forms.TextInput(attrs={"placeholder": "Search", "class": "form-control"})
+        widget=forms.TextInput(
+            attrs={"placeholder": "Search", "class": "form-control"}
+        ),
     )
 
 
@@ -28,20 +30,18 @@ class PriceFilterForm(forms.Form):
         if max_value is not None:
             self.fields["max_price"].label = f"Max price ({round(max_value, 2)})"
 
+
 class FilterClassForm(forms.Form):
     class_name = forms.ModelChoiceField(
         queryset=ItemClass.objects.all(),
         required=False,
         label="Class",
-        widget=forms.Select(attrs={"class": "form-select"})
+        widget=forms.Select(attrs={"class": "form-select"}),
     )
+
 
 class CommentForm(forms.ModelForm):
     class Meta:
         model = Comment
         fields = ["text"]
-        labels = {
-            "text": ""
-        }
-
-
+        labels = {"text": ""}

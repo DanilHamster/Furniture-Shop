@@ -18,7 +18,6 @@ class CustomUserCreationForm(UserCreationForm):
         fields = UserCreationForm.Meta.fields + ("email",)
 
 
-
 class CartItemForm(forms.ModelForm):
     quantity = forms.IntegerField(min_value=1)
 
@@ -38,6 +37,7 @@ class CartItemForm(forms.ModelForm):
             )
         return quantity
 
+
 class UserProfileUpdateForm(forms.ModelForm):
     class Meta:
         model = User
@@ -45,7 +45,7 @@ class UserProfileUpdateForm(forms.ModelForm):
         widgets = {
             "first_name": forms.TextInput(attrs={"class": "form-control"}),
             "last_name": forms.TextInput(attrs={"class": "form-control"}),
-            "email": forms.EmailInput(attrs={"class": "form-control"})
+            "email": forms.EmailInput(attrs={"class": "form-control"}),
         }
 
     def clean_email(self):
@@ -76,6 +76,3 @@ class UserProfileUpdateForm(forms.ModelForm):
         if last_name:
             return last_name.title()
         return last_name
-
-
-
