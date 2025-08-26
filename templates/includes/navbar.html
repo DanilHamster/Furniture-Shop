@@ -1,0 +1,54 @@
+{% load crispy_forms_filters %}
+{% load static %}
+
+<nav class="topbar-nav d-flex justify-content-center align-items-center flex-wrap gap-4">
+
+  <a href="{% url 'index' %}" class="btn btn-outline-light px-3 py-2 rounded-pill border">🏠 Home</a>
+  <span class="topbar-divider"></span>
+
+  <a href="{% url 'service:item-list' %}" class="btn btn-outline-light px-3 py-2 rounded-pill border">📦 All Items</a>
+  <span class="topbar-divider"></span>
+
+  {% if search_form and search_form.name %}
+    <form method="get" action="{% url 'service:item-list' %}" class="d-flex align-items-center" style="gap: 0.75rem;">
+      <input type="text"
+             name="name"
+             placeholder="Search"
+             value="{{ request.GET.name }}"
+             class="form-control form-control-sm rounded-pill"
+             style="max-width: 220px;">
+      <button type="submit" class="btn btn-primary px-3 py-2 rounded-pill border">🔍</button>
+    </form>
+    <span class="topbar-divider"></span>
+  {% endif %}
+
+  {% if user.is_authenticated %}
+    <img src="{{ user.get_image_url|default:'/static/img/default-avatar.png' }}"
+         alt="{{ user.username }}"
+         class="topbar-avatar">
+    <a href="{% url 'accounts:account-profile' %}"
+       class="fw-semibold text-decoration-none text-light px-3 py-2 rounded-pill border">
+      {{ request.user.username }}
+    </a>
+    <span class="topbar-divider"></span>
+
+    <a href="{% url 'accounts:cart-acc' user.cart.id %}" class="btn btn-outline-light px-3 py-2 rounded-pill border">🛒
+      Cart</a>
+    <span class="topbar-divider"></span>
+
+    <form method="post" action="{% url 'accounts:logout' %}">
+      {% csrf_token %}
+      <button type="submit" class="btn btn-outline-danger px-3 py-2 rounded-pill border">🚪 Log Out</button>
+    </form>
+
+  {% else %}
+    <a href="{% url 'accounts:login' %}" class="btn btn-outline-primary px-3 py-2 rounded-pill border">🔐 Log In</a>
+    <span class="topbar-divider"></span>
+
+    <a href="{% url 'accounts:sign-up' %}" class="btn btn-outline-success px-3 py-2 rounded-pill border">📝 Register</a>
+  {% endif %}
+  {% if user.is_superuser %}
+    <span class="topbar-divider"></span>
+    <a href="{% url 'accounts:buy-list' %}" class="btn btn-outline-light px-3 py-2 rounded-pill border">List Buy</a>
+  {% endif %}
+</nav>

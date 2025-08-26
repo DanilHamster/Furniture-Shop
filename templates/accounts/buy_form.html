@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container py-5 px-4">
+  <div class="form-wrapper rounded-4 shadow-lg p-5" style="
+    background-color: rgba(105, 113, 120, 0.7);
+    color: #f8f9fa;
+    border-left: 6px solid gold;
+    backdrop-filter: blur(4px);
+  ">
+    <h2 class="mb-4" style="color: gold;">📝 Fill in the form</h2>
+
+    {% if form.errors %}
+      <div class="alert alert-danger rounded-3 text-start">
+        <strong class="text-warning">⚠️ Please fix the following:</strong>
+        <ul class="mt-2 mb-0">
+          {% for field in form %}
+            {% for error in field.errors %}
+              <li><strong>{{ field.label }}:</strong> {{ error }}</li>
+            {% endfor %}
+          {% endfor %}
+          {% for error in form.non_field_errors %}
+            <li>{{ error }}</li>
+          {% endfor %}
+        </ul>
+      </div>
+    {% endif %}
+
+    <form method="post" action="" novalidate>
+      {% csrf_token %}
+      <fieldset class="form-group">
+        {{ form.as_p }}
+      </fieldset>
+      <button type="submit" class="btn btn-warning rounded-pill px-4 py-2 mt-3 shadow-sm">
+        ✅ Submit
+      </button>
+    </form>
+  </div>
+</div>
+{% endblock %}

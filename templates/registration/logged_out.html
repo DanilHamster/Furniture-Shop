@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="container py-5">
+  <div class="p-5 rounded shadow-lg text-center" style="
+    background-color: rgba(105,113,120,0.7);
+    color: #f8f9fa;
+    border-left: 6px solid gold;
+    backdrop-filter: blur(4px);
+  ">
+    <h2 class="mb-3" style="color: gold;">👋 You’ve been logged out</h2>
+    <p class="text-light mb-4">Thanks for visiting. Come back soon — we’ll be ready for you.</p>
+    <a href="{% url 'accounts:login' %}" class="btn btn-warning px-4 py-2 rounded-pill shadow-sm">
+      🔐 Log In Again
+    </a>
+  </div>
+</div>
+{% endblock %}
