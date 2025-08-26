@@ -10,10 +10,13 @@ class WindowsCompatibleDropboxStorage(DropboxStorage):
         if name == "/":
             name = ""
 
-        if os.name == "nt":
-            return os.path.join("/", self.root_path, name).replace("\\", "/")
-        else:
-            return safe_join(self.root_path, name).replace("\\", "/")
+        name = name.lstrip("/")
+
+        if name.startswith("media/"):
+            name = name[len("media/"):]
+
+        full_path = os.path.join("/", self.root_path, name) if os.name == "nt" else safe_join(self.root_path, name)
+        return full_path.replace("\\", "/").replace("//", "/")
 
     @staticmethod
     def _get_cache_key(name):
