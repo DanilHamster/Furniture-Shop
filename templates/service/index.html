@@ -1,0 +1,100 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="container py-5 px-4">
+
+  <!-- Welcome Block -->
+  <div class="text-center mb-5 p-5 rounded-4 shadow-lg" style="
+    background-color: rgba(105, 113, 120, 0.7);
+    backdrop-filter: blur(4px);
+    border-left: 6px solid gold;
+  ">
+    <h1 class="display-5 fw-bold text-warning">Welcome to My Shop 🛋️</h1>
+    <p class="lead text-light">Discover premium furniture, curated with style and built for comfort.</p>
+    <a href="{% url 'service:item-list' %}" class="btn btn-lg btn-warning rounded-pill mt-3 shadow-sm">Browse Catalog</a>
+  </div>
+
+  <!-- Overview Block -->
+  <div class="row justify-content-center mb-5">
+    <div class="col-md-6">
+      <div class="bg-light rounded-4 shadow-sm p-4" style="border-left: 4px solid gold;">
+        <h4 class="fw-semibold mb-4 text-dark text-center">📊 Shop Overview</h4>
+        <ul class="list-group list-group-flush">
+          <li class="list-group-item d-flex justify-content-between align-items-center text-dark">
+            Items Available
+            <span class="badge bg-success rounded-pill">{{ num_item }} item{{ num_item|pluralize }}</span>
+          </li>
+          <li class="list-group-item d-flex justify-content-between align-items-center text-dark">
+            Furniture Class{{ num_class|pluralize }}
+            <span class="badge bg-warning text-dark rounded-pill">{{ num_class }}</span>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div class="mb-5">
+    <h4 class="fw-semibold text-center text-warning mb-4">🧩 Explore Categories</h4>
+    <div class="row text-center g-4">
+
+      <div class="col-md-4">
+        <div class="p-4 rounded-4 shadow-sm" style="
+          background-color: #f8f9fa;
+          transition: 0.3s ease;
+        ">
+          <h5 class="fw-bold">🪑 Chairs</h5>
+          <p class="text-muted">Elegant seating for every space.</p>
+          <a href="{% url 'service:item-list' %}?class_name=1" class="btn btn-sm btn-outline-dark rounded-pill">View Chairs</a>
+        </div>
+      </div>
+
+      <div class="col-md-4">
+        <div class="p-4 rounded-4 shadow-sm" style="
+          background-color: #f8f9fa;
+          transition: 0.3s ease;
+        ">
+          <h5 class="fw-bold">🛏️ Beds</h5>
+          <p class="text-muted">Sleep in style and comfort.</p>
+          <a href="{% url 'service:item-list' %}?class_name=4" class="btn btn-sm btn-outline-dark rounded-pill">View Beds</a>
+        </div>
+      </div>
+
+      <div class="col-md-4">
+        <div class="p-4 rounded-4 shadow-sm" style="
+          background-color: #f8f9fa;
+          transition: 0.3s ease;
+        ">
+          <h5 class="fw-bold">🛋️ Sofas</h5>
+          <p class="text-muted">Relax with premium comfort.</p>
+          <a href="{% url 'service:item-list' %}?class_name=3" class="btn btn-sm btn-outline-dark rounded-pill">View Sofas</a>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <div class="mb-5">
+    <h4 class="fw-semibold text-center text-warning mb-4">✨ Why Choose Us</h4>
+    <div class="row text-center g-4">
+      <div class="col-md-4">
+        <div class="p-4 rounded-4 shadow-sm bg-light">
+          <h6 class="fw-bold text-success">✅ Quality Materials</h6>
+          <p class="text-muted small">We source only durable and eco-friendly materials.</p>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="p-4 rounded-4 shadow-sm bg-light">
+          <h6 class="fw-bold text-success">🚚 Fast Delivery</h6>
+          <p class="text-muted small">Nationwide shipping within 3–5 business days.</p>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="p-4 rounded-4 shadow-sm bg-light">
+          <h6 class="fw-bold text-success">💬 Customer Support</h6>
+          <p class="text-muted small">We’re here to help you find the perfect piece.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+{% endblock %}

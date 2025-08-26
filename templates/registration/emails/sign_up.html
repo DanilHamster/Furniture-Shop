@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+<div class="container py-5 px-4">
+  <div class="p-5 rounded-4 shadow-lg" style="
+    background-color: rgba(105, 113, 120, 0.7);
+    color: #f8f9fa;
+    border-left: 6px solid gold;
+    backdrop-filter: blur(4px);
+  ">
+    <h2 class="mb-4 fw-bold text-warning text-center">📝 Create Your Account</h2>
+
+    <form method="post" action="" novalidate class="p-4 rounded-4 shadow-sm" style="background-color: rgba(255,255,255,0.05);">
+      {% csrf_token %}
+      {{ form|crispy }}
+      <div class="text-end mt-3">
+        <button class="btn btn-warning rounded-pill px-4 shadow-sm" type="submit">
+          ✅ Sign Up
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
+{% endblock %}

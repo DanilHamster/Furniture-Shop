@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+{% load crispy_forms_filters %}
+{% block content %}
+<div class="container mt-4">
+  <h1>Change Item</h1>
+  <form method="post" action="" novalidate>
+    {% csrf_token %}
+    <div class="mb-3">
+      {{ form|crispy }}
+    </div>
+    <button type="submit" class="btn btn-primary">Submit</button>
+  </form>
+</div>
+{% endblock %}
