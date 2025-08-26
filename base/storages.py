@@ -20,6 +20,7 @@ class WindowsCompatibleDropboxStorage(DropboxStorage):
         return f"dropbox:media:{name}"
 
     def url(self, name):
+        name = self._full_path(name)
         cache_key = self._get_cache_key(name)
         link = cache.get(cache_key)
         if link:
