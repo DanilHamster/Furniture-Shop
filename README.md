@@ -23,7 +23,7 @@ Furniture-Shop/
 └── .env
 ```
 
-
+python manage.py collectstatic
 
 
 ## ⚙️ Setup Guide
@@ -61,8 +61,7 @@ DROPBOX_APP_KEY=your-app-key
 DROPBOX_APP_SECRET=your-app-secret
 ```
 
-
-5. 🧱 Apply migrations and load fixtures
+6. 🧱 Apply migrations and load fixtures
 ```
 python manage.py migrate
 python manage.py loaddata furniture_fixture.json
@@ -71,6 +70,13 @@ python manage.py loaddata furniture_fixture.json
 
 7. 👤 Create superuser (optional)
 python manage.py createsuperuser
+
+8. 📁 Collect static files (for production)
+
+```bash
+python manage.py collectstatic
+```
+
 
 
 ✅ Default admin credentials:
