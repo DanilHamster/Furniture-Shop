@@ -1,0 +1,26 @@
+# 🔐 Django Core Settings
+SECRET_KEY=your-secret-key-here
+DEBUG=True
+DJANGO_SETTINGS_MODULE=Market.settings.dev
+ALLOWED_HOSTS=127.0.0.1,localhost
+
+# 📧 Email Configuration
+EMAIL_HOST=smtp.gmail.com
+EMAIL_PORT=587
+EMAIL_USE_TLS=True
+EMAIL_HOST_USER=your-email@example.com
+EMAIL_HOST_PASSWORD=your-email-password
+
+# 📦 Dropbox Storage (optional)
+DROPBOX_OAUTH2_ACCESS_TOKEN=your-dropbox-access-token
+DROPBOX_OAUTH2_REFRESH_TOKEN=your-dropbox-refresh-token
+DROPBOX_APP_KEY=your-dropbox-app-key
+DROPBOX_APP_SECRET=your-dropbox-app-secret
+DROPBOX_ROOT_PATH=media/
+
+# 🗄️ PostgreSQL via Neon
+POSTGRES_DB=your-database-name
+POSTGRES_DB_PORT=5432
+POSTGRES_USER=your-db-username
+POSTGRES_PASSWORD=your-db-password
+POSTGRES_HOST=your-db-host-url
