@@ -1,26 +1,29 @@
 {% extends 'base.html' %}
 {% load crispy_forms_filters %}
 
-{% block content %}
-<div class="container py-5 px-4">
-  <div class="p-5 rounded-4 shadow-lg text-light" style="
+
+{% if user.is_superuser %}
+  {% block content %}
+    <div class="container py-5 px-4">
+      <div class="p-5 rounded-4 shadow-lg text-light" style="
     background-color: rgba(105,113,120,0.7);
     backdrop-filter: blur(4px);
     border-left: 6px solid gold;
   ">
-    <h2 class="mb-4 fw-bold text-warning text-center">
-      {{ object|yesno:"Update,Create" }} Item
-    </h2>
+        <h2 class="mb-4 fw-bold text-warning text-center">
+          {{ object|yesno:"Update,Create" }} Item
+        </h2>
 
-    <form method="post" enctype="multipart/form-data" novalidate>
-      {% csrf_token %}
-      {{ form|crispy }}
-      <div class="text-end mt-4">
-        <button type="submit" class="btn btn-warning px-4 py-2 rounded-pill shadow-sm fw-semibold">
-          💾 Save
-        </button>
+        <form method="post" enctype="multipart/form-data" novalidate>
+          {% csrf_token %}
+          {{ form|crispy }}
+          <div class="text-end mt-4">
+            <button type="submit" class="btn btn-warning px-4 py-2 rounded-pill shadow-sm fw-semibold">
+              💾 Save
+            </button>
+          </div>
+        </form>
       </div>
-    </form>
-  </div>
-</div>
-{% endblock %}
+    </div>
+  {% endblock %}
+{% endif %}
