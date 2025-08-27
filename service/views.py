@@ -121,6 +121,10 @@ class ItemCreateView(UserPassesTestMixin, generic.CreateView):
     template_name = "service/item_form.html"
     success_url = reverse_lazy("service:item-list")
 
+    def test_func(self):
+        return self.request.user.is_superuser
+
+
 
 class ItemUpdateView(UserPassesTestMixin, generic.UpdateView):
     model = Item
@@ -137,15 +141,24 @@ class ItemUpdateView(UserPassesTestMixin, generic.UpdateView):
     template_name = "service/item_form.html"
     success_url = reverse_lazy("service:item-list")
 
+    def test_func(self):
+        return self.request.user.is_superuser
+
 
 class ItemDeleteView(UserPassesTestMixin, generic.DeleteView):
     model = Item
     success_url = reverse_lazy("service:item-list")
 
+    def test_func(self):
+        return self.request.user.is_superuser
 
-class CommentDelete(generic.DeleteView):
+
+class CommentDelete(UserPassesTestMixin, generic.DeleteView):
     model = Comment
 
     def get_success_url(self):
         item = self.object.items.first()
         return reverse_lazy("service:item-detail", kwargs={"pk": item.pk})
+
+    def test_func(self):
+        return self.request.user.is_superuser
