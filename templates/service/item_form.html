@@ -2,7 +2,7 @@
 {% load crispy_forms_filters %}
 
 
-{% if user.is_superuser %}
+{% if user.is_staff %}
   {% block content %}
     <div class="container py-5 px-4">
       <div class="p-5 rounded-4 shadow-lg text-light" style="
