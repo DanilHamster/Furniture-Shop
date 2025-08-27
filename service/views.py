@@ -1,3 +1,4 @@
+from django.contrib.auth.mixins import UserPassesTestMixin
 from django.db.models import Min, Max
 from django.db.transaction import commit
 from django.urls.base import reverse, reverse_lazy
@@ -105,7 +106,7 @@ class ItemDetailView(FormMixin, generic.DetailView):
         return context
 
 
-class ItemCreateView(generic.CreateView):
+class ItemCreateView(UserPassesTestMixin, generic.CreateView):
     model = Item
     fields = (
         "name",
@@ -121,7 +122,7 @@ class ItemCreateView(generic.CreateView):
     success_url = reverse_lazy("service:item-list")
 
 
-class ItemUpdateView(generic.UpdateView):
+class ItemUpdateView(UserPassesTestMixin, generic.UpdateView):
     model = Item
     fields = (
         "name",
@@ -137,7 +138,7 @@ class ItemUpdateView(generic.UpdateView):
     success_url = reverse_lazy("service:item-list")
 
 
-class ItemDeleteView(generic.DeleteView):
+class ItemDeleteView(UserPassesTestMixin, generic.DeleteView):
     model = Item
     success_url = reverse_lazy("service:item-list")
 
