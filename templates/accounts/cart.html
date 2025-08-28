@@ -1,84 +1,110 @@
 {% extends "base.html" %}
 
 {% block content %}
-<div class="container py-5 px-4 rounded-4" style="
+  <div class="container py-5 px-4 rounded-4" style="
   background-color: rgba(105, 113, 120, 0.7);
   backdrop-filter: blur(4px);
   color: #f8f9fa;
 ">
-  <h2 class="mb-5 text-center fw-bold" style="color: gold;">🛒 Your Cart</h2>
+    <h2 class="mb-5 text-center fw-bold" style="color: gold;">🛒 Your Cart</h2>
 
-  {% if cart.items.all %}
-    <div class="row g-4">
-      <div class="col-lg-9">
-        {% for item in cart.items.all %}
-          <div class="card shadow-lg border-0 rounded-4 mb-4" style="
+    {% if cart.items.all %}
+      <div class="row g-4">
+        <div class="col-lg-9">
+          {% for item in cart.items.all %}
+            <div class="card shadow-lg border-0 rounded-4 mb-4" style="
             background-color: #f0f0f0;
             color: #2a2a2a;
             border-left: 4px solid gold;
           ">
-            <div class="card-body">
-              <div class="row g-3 align-items-center">
-                <div class="col-3 text-center">
-                  <a href="{% url 'service:item-detail' item.item.id %}">
-                    <img src="{{ item.item.get_image_url }}" alt="{{ item.item.name }}"
-                         class="img-fluid rounded-3 shadow-sm" style="max-height: 100px; object-fit: cover;">
-                  </a>
-                </div>
-
-                <div class="col-5">
-                  <h5 class="mb-1 fw-semibold">
-                    <a href="{% url 'service:item-detail' item.item.id %}" class="text-dark text-decoration-none">
-                      {{ item.item.name }}
+              <div class="card-body">
+                <div class="row g-3 align-items-center">
+                  <div class="col-3 text-center">
+                    <a href="{% url 'service:item-detail' item.item.id %}">
+                      <img src="{{ item.item.get_image_url }}" alt="{{ item.item.name }}"
+                           class="img-fluid rounded-3 shadow-sm" style="max-height: 100px; object-fit: cover;">
                     </a>
-                  </h5>
-                  <p class="mb-1 text-warning">🎨 {{ item.item.color.color }}</p>
-                  <p class="mb-1">📦 Stock: {{ item.item.count }}</p>
-                  <p class="mb-0 fw-bold text-success">💵 ${{ item.item.price }}</p>
-                </div>
+                  </div>
 
-                <div class="col-4 text-end">
-                  <form method="post" action="{% url 'accounts:cart-item' item.id %}" class="mb-2">
-                    {% csrf_token %}
-                    <label class="form-label text-muted small mb-1">Quantity</label>
-                    <div class="input-group input-group-sm">
-                      <input type="number" name="quantity" value="{{ item.quantity }}"
-                             min="1" max="{{ item.item.count }}" class="form-control rounded-start">
-                      <button type="submit" class="btn btn-outline-warning rounded-end">Update</button>
-                    </div>
-                  </form>
-                  <form method="post" action="{% url 'accounts:del-item' item.id %}">
-                    {% csrf_token %}
-                    <button type="submit" class="btn btn-sm btn-outline-danger rounded-pill">🗑 Remove</button>
-                  </form>
+                  <div class="col-5">
+                    <h5 class="mb-1 fw-semibold">
+                      <a href="{% url 'service:item-detail' item.item.id %}" class="text-dark text-decoration-none">
+                        {{ item.item.name }}
+                      </a>
+                    </h5>
+                    <p class="mb-1 text-warning">🎨 {{ item.item.color.color }}</p>
+                    <p class="mb-1">📦 Stock: {{ item.item.count }}</p>
+                    <p class="mb-0 fw-bold text-success">💵 ${{ item.item.price }}</p>
+                  </div>
+
+                  <div class="col-4 text-end">
+                    <form method="post" action="{% url 'accounts:cart-item' item.id %}" class="mb-2">
+                      {% csrf_token %}
+                      <label class="form-label text-muted small mb-1">Quantity</label>
+                      <div class="input-group input-group-sm">
+                        <input type="number" name="quantity" value="{{ item.quantity }}"
+                               min="1" max="{{ item.item.count }}" class="form-control rounded-start">
+                        <button type="submit" class="btn btn-outline-warning rounded-end">Update</button>
+                      </div>
+                    </form>
+                    <button type="button" class="btn btn-sm btn-outline-danger mt-2"
+                            data-bs-toggle="modal" data-bs-target="#deleteModal{{ item.id }}">
+                      🗑️ Remove
+                    </button>
+
+
+                  </div>
                 </div>
               </div>
             </div>
-          </div>
-        {% endfor %}
-      </div>
+          {% endfor %}
+        </div>
 
-      <div class="col-lg-3">
-        <div class="position-sticky top-0">
-          <div class="card shadow-lg border-0 rounded-4" style="background-color: #f8f9fa;">
-            <div class="card-body">
-              <h5 class="mb-3 fw-bold text-dark">🧾 Order Summary</h5>
-              <p class="mb-2 text-dark">Subtotal: <strong>${{ cart.total_price }}</strong></p>
-              <p class="mb-2 text-muted small">🚚 Shipping: calculated at checkout</p>
-              <hr>
-              <a href="{% url 'accounts:buy-form' %}" class="btn btn-warning w-100 mb-2 rounded-pill shadow-sm">
-                ✅ Proceed to Checkout
-              </a>
-              <button class="btn btn-outline-dark w-100 rounded-pill" onclick="history.back()">← Continue Shopping</button>
+        <div class="col-lg-3">
+          <div class="position-sticky top-0">
+            <div class="card shadow-lg border-0 rounded-4" style="background-color: #f8f9fa;">
+              <div class="card-body">
+                <h5 class="mb-3 fw-bold text-dark">🧾 Order Summary</h5>
+                <p class="mb-2 text-dark">Subtotal: <strong>${{ cart.total_price }}</strong></p>
+                <p class="mb-2 text-muted small">🚚 Shipping: calculated at checkout</p>
+                <hr>
+                <a href="{% url 'accounts:buy-form' %}" class="btn btn-warning w-100 mb-2 rounded-pill shadow-sm">
+                  ✅ Proceed to Checkout
+                </a>
+                <button class="btn btn-outline-dark w-100 rounded-pill" onclick="history.back()">← Continue Shopping
+                </button>
+              </div>
             </div>
           </div>
         </div>
       </div>
+    {% else %}
+      <div class="alert alert-warning text-center mt-5 rounded-3 shadow-sm">
+        🧺 Your cart is empty
+      </div>
+    {% endif %}
+  </div>
+  {% for item in cart.items.all %}
+    <div class="modal fade" id="deleteModal{{ item.id }}" tabindex="-1"
+         aria-labelledby="deleteModalLabel{{ item.id }}" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="deleteModalLabel{{ item.id }}">Confirm delete</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            Are you sure you want to remove <strong>{{ item.item.name }}</strong> from your cart?
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+            <form method="post" action="{% url "accounts:del-item" item.pk %}">
+              {% csrf_token %}
+              <button type="submit" class="btn btn-danger">Yes, remove</button>
+            </form>
+          </div>
+        </div>
+      </div>
     </div>
-  {% else %}
-    <div class="alert alert-warning text-center mt-5 rounded-3 shadow-sm">
-      🧺 Your cart is empty
-    </div>
-  {% endif %}
-</div>
+  {% endfor %}
 {% endblock %}

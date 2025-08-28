@@ -153,12 +153,10 @@ class ItemDeleteView(UserPassesTestMixin, generic.DeleteView):
         return self.request.user.is_superuser
 
 
-class CommentDelete(UserPassesTestMixin, generic.DeleteView):
+class CommentDelete(generic.DeleteView):
     model = Comment
 
     def get_success_url(self):
         item = self.object.items.first()
         return reverse_lazy("service:item-detail", kwargs={"pk": item.pk})
 
-    def test_func(self):
-        return self.request.user.is_superuser

@@ -50,19 +50,14 @@
     {% for item in page_obj %}
       <div class="col mb-4">
         <div class="card h-100 shadow-sm border-0" style="
-          background-color: {% if item.count == 0 %}#d6d6d6{% else %}#f8f9fa{% endif %};
-          color: {% if item.count == 0 %}#888{% else %}#2a2a2a{% endif %};
-          border-radius: 1rem;
+            background-color: {% if item.count == 0 %}#d6d6d6{% else %}#f8f9fa{% endif %};
+            color: {% if item.count == 0 %}#888{% else %}#2a2a2a{% endif %};
+            border-radius: 1rem;
         ">
-          {% if item.count > 0 %}
-            <a href="{% url 'service:item-detail' item.id %}" class="text-decoration-none">
-              <img src="{{ item.get_image_url }}" alt="{{ item.name }}" title="{{ item.name }}"
-                   class="card-img-top rounded-top" style="height: 220px; object-fit: cover;">
-            </a>
-          {% else %}
+          <a href="{% url 'service:item-detail' item.id %}" class="text-decoration-none text-dark">
             <img src="{{ item.get_image_url }}" alt="{{ item.name }}" title="{{ item.name }}"
-                 class="card-img-top rounded-top" style="height: 220px; object-fit: cover;">
-          {% endif %}
+               class="card-img-top rounded-top" style="height: 220px; object-fit: cover;">
+          </a>
 
           <div class="card-body d-flex flex-column gap-3">
             <h5 class="card-title fw-bold">
@@ -92,10 +87,8 @@
               {% if user.is_superuser %}
                 <div class="btn-group">
                   <a href="{% url 'service:item-update' item.pk %}" class="btn btn-sm btn-outline-primary">✏️ Edit</a>
-                  <form method="post" action="{% url 'service:item-del' item.pk %}">
-                    {% csrf_token %}
-                    <button type="submit" class="btn btn-sm btn-outline-danger">🗑️ Delete</button>
-                  </form>
+                  <button type="button" class="btn btn-sm btn-outline-danger" data-bs-toggle="modal"
+                          data-bs-target="#deleteModal{{ item.id }}">🗑️ Delete</button>
                 </div>
               {% else %}
                 {% if item.count > 0 %}
@@ -127,4 +120,31 @@
     {% endfor %}
   </div>
 </div>
+{% if user.is_superuser %}
+  {% for item in page_obj %}
+  <div class="modal fade" id="deleteModal{{ item.id }}" tabindex="-1"
+       aria-labelledby="deleteModalLabel{{ item.id }}" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="deleteModalLabel{{ item.id }}">Confirm delete</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          Are you sure you want to delete <strong>{{ item.name }}</strong>?
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+          <form method="post" action="{% url 'service:item-del' item.pk %}">
+            {% csrf_token %}
+            <button type="submit" class="btn btn-danger">Yes, delete</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+{% endfor %}
+{% endif %}
+
+
 {% endblock %}

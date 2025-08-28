@@ -27,18 +27,18 @@
         <div class="col-md-8">
           <table class="table table-sm table-borderless text-light mb-4">
             <tbody>
-              <tr>
-                <th scope="row" class="text-warning">👤 Username</th>
-                <td>{{ request.user.username }}</td>
-              </tr>
-              <tr>
-                <th scope="row" class="text-warning">📛 Full Name</th>
-                <td>{{ request.user.first_name }} {{ request.user.last_name }}</td>
-              </tr>
-              <tr>
-                <th scope="row" class="text-warning">📧 Email</th>
-                <td>{{ request.user.email }}</td>
-              </tr>
+            <tr>
+              <th scope="row" class="text-warning">👤 Username</th>
+              <td>{{ request.user.username }}</td>
+            </tr>
+            <tr>
+              <th scope="row" class="text-warning">📛 Full Name</th>
+              <td>{{ request.user.first_name }} {{ request.user.last_name }}</td>
+            </tr>
+            <tr>
+              <th scope="row" class="text-warning">📧 Email</th>
+              <td>{{ request.user.email }}</td>
+            </tr>
             </tbody>
           </table>
 
@@ -48,7 +48,8 @@
             <div class="card mb-3 shadow-sm border-0 rounded-4" style="background-color: #eeeeee; color: #2a2a2a;">
               <div class="card-body d-flex flex-column gap-2">
                 <h5 class="card-title text-truncate">
-                  <a href="{% url 'service:item-detail' last_buy.item_id %}" class="text-decoration-none text-dark fw-bold">
+                  <a href="{% url 'service:item-detail' last_buy.item_id %}"
+                     class="text-decoration-none text-dark fw-bold">
                     🧩 {{ last_buy.item_name }}
                   </a>
                 </h5>
@@ -60,7 +61,10 @@
                 </div>
                 <form method="post" action="{% url 'accounts:last-buy-delete' last_buy.id %}" class="mt-2">
                   {% csrf_token %}
-                  <button type="submit" class="btn btn-sm btn-outline-danger rounded-pill">🗑️ Delete</button>
+                  <button type="button" class="btn btn-sm btn-outline-danger rounded-pill"
+                          data-bs-toggle="modal" data-bs-target="#deleteModal{{ last_buy.id }}">
+                    🗑️ Delete
+                  </button>
                 </form>
               </div>
             </div>
@@ -71,4 +75,27 @@
       </div>
     </div>
   {% endif %}
+{% for last_buy in user.last_buys.all %}
+  <div class="modal fade" id="deleteModal{{ last_buy.id }}" tabindex="-1"
+       aria-labelledby="deleteModalLabel{{ last_buy.id }}" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="deleteModalLabel{{ last_buy.id }}">Confirm delete</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          Are you sure you want to delete <strong>{{ last_buy.item_name }}</strong> from your purchase history?
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+          <form method="post" action="{% url 'accounts:last-buy-delete' last_buy.id %}">
+            {% csrf_token %}
+            <button type="submit" class="btn btn-danger">Yes, delete</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+{% endfor %}
 {% endblock %}
