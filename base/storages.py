@@ -13,11 +13,13 @@ class WindowsCompatibleDropboxStorage(DropboxStorage):
         name = name.lstrip("/")
 
         if self.root_path and name.startswith(self.root_path + "/"):
-            name = name[len(self.root_path) + 1:]
+            name = name[len(self.root_path) + 1 :]
 
         root = self.root_path.strip("/\\") if self.root_path else ""
 
-        full_path = os.path.join("/", root, name) if os.name == "nt" else f"/{root}/{name}"
+        full_path = (
+            os.path.join("/", root, name) if os.name == "nt" else f"/{root}/{name}"
+        )
         return full_path.replace("\\", "/").replace("//", "/")
 
     @staticmethod

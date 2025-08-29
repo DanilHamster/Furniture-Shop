@@ -1,23 +1,21 @@
 from django.contrib.auth.mixins import UserPassesTestMixin
 from django.db.models import Min, Max
-from django.db.transaction import commit
-from django.urls.base import reverse, reverse_lazy
+from django.urls.base import reverse_lazy
 from django.views import generic
-from django.http.request import HttpRequest
-from django.http.response import HttpResponse
-from django.shortcuts import render, redirect
 from django.views.generic.edit import FormMixin
-
 from account.models import Comment
 from service.forms import SearchItemForm, PriceFilterForm, FilterClassForm, CommentForm
 from service.models import Item, ItemClass
 
 
-def index(request: HttpRequest) -> HttpResponse:
-    num_item = Item.objects.all().count()
-    num_class = ItemClass.objects.all().count()
-    context = {"num_item": num_item, "num_class": num_class}
-    return render(request, "service/index.html", context=context)
+class IndexView(generic.TemplateView):
+    template_name = "service/index.html"
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["num_item"] = Item.objects.count()
+        context["num_class"] = ItemClass.objects.count()
+        return context
 
 
 class ItemListView(generic.ListView):
@@ -37,6 +35,8 @@ class ItemListView(generic.ListView):
             queryset = queryset.order_by("price")
         elif self.sort_by == "price_desc":
             queryset = queryset.order_by("-price")
+        else:
+            queryset = queryset.order_by("name")
 
         if self.class_filter.is_valid():
             selected_class = self.class_filter.cleaned_data.get("class_name")
@@ -125,7 +125,6 @@ class ItemCreateView(UserPassesTestMixin, generic.CreateView):
         return self.request.user.is_superuser
 
 
-
 class ItemUpdateView(UserPassesTestMixin, generic.UpdateView):
     model = Item
     fields = (
@@ -159,4 +158,3 @@ class CommentDelete(generic.DeleteView):
     def get_success_url(self):
         item = self.object.items.first()
         return reverse_lazy("service:item-detail", kwargs={"pk": item.pk})
-

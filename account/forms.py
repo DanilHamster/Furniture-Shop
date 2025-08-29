@@ -1,5 +1,5 @@
 from django.core.exceptions import ValidationError
-from django.core.validators import validate_email
+from django.core.validators import validate_email, RegexValidator
 from django.template.defaultfilters import first
 
 from account.models import User, CartItem
@@ -36,6 +36,65 @@ class CartItemForm(forms.ModelForm):
                 f"You can select maximum {max_qty} of {name_item}"
             )
         return quantity
+
+
+class BuyForm(forms.Form):
+    phone_number = forms.CharField(
+        max_length=13,
+        label="Phone Number",
+        validators=[
+            RegexValidator(
+                regex=r"^\+380\d{9}$",
+                message="Enter a valid phone number in the format +380XXXXXXXXX",
+            )
+        ],
+        widget=forms.TextInput(
+            attrs={
+                "placeholder": "+380XXXXXXXXX",
+                "class": "form-control",
+                "inputmode": "tel",
+                "autocomplete": "off",
+            }
+        ),
+    )
+
+    card_number = forms.CharField(
+        max_length=16,
+        min_length=16,
+        label="Card Number",
+        validators=[
+            RegexValidator(
+                regex=r"^\d{16}$", message="Card number must contain exactly 16 digits"
+            )
+        ],
+        widget=forms.TextInput(
+            attrs={
+                "placeholder": "1234123412341234",
+                "class": "form-control",
+                "inputmode": "numeric",
+                "autocomplete": "off",
+            }
+        ),
+    )
+
+    cvv = forms.CharField(
+        max_length=3,
+        min_length=3,
+        label="CVV",
+        validators=[
+            RegexValidator(
+                regex=r"^\d{3}$", message="CVV must contain exactly 3 digits"
+            )
+        ],
+        widget=forms.TextInput(
+            attrs={
+                "placeholder": "***",
+                "class": "form-control",
+                "inputmode": "numeric",
+                "autocomplete": "off",
+            }
+        ),
+    )
 
 
 class UserProfileUpdateForm(forms.ModelForm):

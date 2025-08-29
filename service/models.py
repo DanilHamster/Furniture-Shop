@@ -1,3 +1,4 @@
+from django.conf import settings
 from django.core.validators import MinValueValidator
 from django.db import models
 
@@ -5,12 +6,18 @@ from django.db import models
 class Color(models.Model):
     color = models.CharField(max_length=25)
 
+    class Meta:
+        app_label = "service"
+
     def __str__(self):
         return f"{self.color}"
 
 
 class Material(models.Model):
     material = models.CharField(max_length=25)
+
+    class Meta:
+        app_label = "service"
 
     def __str__(self):
         return f"{self.material}"
@@ -37,10 +44,13 @@ class Item(models.Model):
     image = models.ImageField(null=True, blank=True, upload_to="items/itemphoto/")
     comment = models.ManyToManyField("account.Comment", related_name="items")
 
+    class Meta:
+        app_label = "service"
+
     def get_image_url(self):
         if self.image:
             return self.image.url
-        return "/static/img/placeholder.png"
+        return f"{settings.STATIC_URL}img/placeholder.png"
 
     def __str__(self):
         return f"Item: {self.name}, Price: {self.price}"
@@ -48,6 +58,9 @@ class Item(models.Model):
 
 class ItemClass(models.Model):
     name = models.CharField(max_length=255)
+
+    class Meta:
+        app_label = "service"
 
     def __str__(self):
         return f"{self.name}"

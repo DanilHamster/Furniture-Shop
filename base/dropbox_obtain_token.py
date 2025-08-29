@@ -1,8 +1,8 @@
 import requests
 from requests.auth import HTTPBasicAuth
 
-APP_KEY = "rbgshh6iasigsre"
-APP_SECRET = "lwmef9zzbhayiof"
+APP_KEY = "your key"
+APP_SECRET = "your secret"
 
 authorize_url = f"https://www.dropbox.com/oauth2/authorize?client_id={APP_KEY}&token_access_type=offline&response_type=code"
 print("1. Go to: " + authorize_url)

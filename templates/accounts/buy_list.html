@@ -4,7 +4,7 @@
     <div class="container py-5">
       <h2 class="mb-4 text-light">🧾 Purchase History</h2>
 
-      {% for buy in buy_list|dictsortreversed:"created_at" %}
+      {% for item in buy_list|dictsortreversed:"created_at" %}
         <div class="p-4 mb-5 rounded shadow-lg" style="
           background-color: rgba(105,113,120,0.7);
           color: #f8f9fa;
@@ -12,33 +12,33 @@
           backdrop-filter: blur(4px);
         ">
           <div class="d-flex justify-content-between align-items-center mb-3">
-            <h5 class="mb-0" style="color: gold;">🛒 Purchase #{{ buy.id }}</h5>
-            <span class="badge {% if buy.status %}bg-success{% else %}bg-warning text-dark{% endif %}">
-              {{ buy.status|yesno:"Completed,Pending" }}
+            <h5 class="mb-0" style="color: gold;">🛒 Purchase #{{ item.id }}</h5>
+            <span class="badge {% if item.status %}bg-success{% else %}bg-warning text-dark{% endif %}">
+              {{ item.status|yesno:"Completed,Pending" }}
             </span>
           </div>
 
           <div class="row">
             <div class="col-md-6">
-              <p><strong>User:</strong> {{ buy.user }}</p>
+              <p><strong>User:</strong> {{ item.user }}</p>
               <p><strong>Item:</strong>
-                <a href="{% url 'service:item-detail' buy.item_id %}" class="text-warning fw-bold">
-                  🧩 {{ buy.item_name }} <small class="text-light">(ID: {{ buy.item_id }})</small>
+                <a href="{% url 'service:item-detail' item.item_id %}" class="text-warning fw-bold">
+                  🧩 {{ item.item_name }} <small class="text-light">(ID: {{ item.item_id }})</small>
                 </a>
               </p>
-              <p><strong>Quantity:</strong> {{ buy.item_quantity }}</p>
-              <p><strong>Cart ID:</strong> <span class="badge bg-secondary">{{ buy.cart.id }}</span></p>
+              <p><strong>Quantity:</strong> {{ item.item_quantity }}</p>
+              <p><strong>Cart ID:</strong> <span class="badge bg-secondary">{{ item.cart.id }}</span></p>
             </div>
 
             <div class="col-md-6">
-              <p><strong>Item Price:</strong> <span class="text-info">${{ buy.item_price }}</span></p>
-              <p><strong>Total Price:</strong> <span class="text-success">${{ buy.get_total_price }}</span></p>
-              <p><strong>Phone:</strong> 📞 {{ buy.phone_number }}</p>
-              <p><strong>Card:</strong> 💳 {{ buy.card_number }}</p>
+              <p><strong>Item Price:</strong> <span class="text-info">${{ item.item_price }}</span></p>
+              <p><strong>Total Price:</strong> <span class="text-success">${{ item.get_total_price }}</span></p>
+              <p><strong>Phone:</strong> 📞 {{ item.phone_number }}</p>
+              <p><strong>Card:</strong> 💳 {{ item.card_number }}</p>
               <p><strong>CVV:</strong> ***</p>
-              <p><strong>Date:</strong> 🕒 {{ buy.created_at|date:"F j, Y, H:i" }}</p>
+              <p><strong>Date:</strong> 🕒 {{ item.created_at|date:"F j, Y, H:i" }}</p>
 
-              <form method="post" action="{% url 'accounts:buy-del' buy.id %}" class="mt-3">
+              <form method="post" action="{% url 'accounts:buy-del' item.id %}" class="mt-3">
                 {% csrf_token %}
                 <button type="submit" class="btn btn-outline-danger btn-sm rounded-pill px-4">
                   🗑️ Delete

@@ -1,5 +1,6 @@
 from tkinter.constants import CASCADE
 
+from django.conf import settings
 from django.contrib.auth.models import AbstractUser
 from django.db import models
 
@@ -31,7 +32,7 @@ class User(AbstractUser):
     def get_image_url(self):
         if self.avatar:
             return self.avatar.url
-        return "/static/img/placeholder.png"
+        return f"{settings.STATIC_URL}img/placeholder.png"
 
 
 class Comment(models.Model):

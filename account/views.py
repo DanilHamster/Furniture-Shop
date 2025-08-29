@@ -3,7 +3,7 @@ from django.http import HttpResponse
 from django.shortcuts import get_object_or_404
 from django.urls import reverse_lazy
 
-from account.forms import CartItemForm, UserProfileUpdateForm
+from account.forms import CartItemForm, UserProfileUpdateForm, BuyForm
 from account.models import User, Cart, CartItem, Buy, LastBuyItem
 from service.models import Item
 import logging
@@ -48,10 +48,10 @@ class CartItemUpdateView(generic.UpdateView):
         return reverse_lazy("accounts:cart-acc", kwargs={"pk": self.object.cart.id})
 
 
-class BuyForm(generic.CreateView):
+class BuyFormView(generic.FormView):
+    form_class = BuyForm
     model = Buy
     template_name = "accounts/buy_form.html"
-    fields = ["phone_number", "card_number", "cvv"]
 
     def form_valid(self, form):
         phone = form.cleaned_data.get("phone_number")
@@ -97,20 +97,26 @@ class LastBuyDeleteView(generic.DeleteView):
         return reverse_lazy("accounts:account-profile")
 
 
-def add_to_cart(request: HttpRequest) -> HttpResponse:
-    if request.method == "POST":
+class AddToCartView(View):
+    def post(self, request: HttpRequest) -> HttpResponse:
         item_id = request.POST.get("item_id")
         item = get_object_or_404(Item, pk=item_id)
-        cart = Cart.objects.get(user=request.user)
+
+        cart, _ = Cart.objects.get_or_create(user=request.user)
         cart_item = CartItem.objects.filter(cart=cart, item=item).first()
+
         if cart_item and item.count > cart_item.quantity:
             cart_item.quantity += 1
             cart_item.save()
-
         else:
-            CartItem.objects.get_or_create(cart=cart, item=item, quantity=1)
-            return redirect("accounts:cart-acc", cart.id)
-    return redirect("accounts:cart-acc", cart.id)
+            CartItem.objects.get_or_create(
+                cart=cart, item=item, defaults={"quantity": 1}
+            )
+
+        return redirect("accounts:cart-acc", cart.id)
+
+    def get(self, request: HttpRequest) -> HttpResponse:
+        return redirect("accounts:cart-acc", request.user.cart.id)
 
 
 class CartItemDeleteView(generic.DeleteView):
@@ -212,11 +218,11 @@ class BuyListView(generic.ListView):
 
         item_map = {
             item.id: item.name
-            for item in Item.objects.filter(id__in=[buy.item_id for buy in buy_list])
+            for item in Item.objects.filter(id__in=[item.item_id for item in buy_list])
         }
 
-        for buy in buy_list:
-            buy.item_name = item_map.get(buy.item_id, "Unknown item")
+        for item in buy_list:
+            item.item_name = item_map.get(item.item_id, "Unknown item")
 
         return context
 
