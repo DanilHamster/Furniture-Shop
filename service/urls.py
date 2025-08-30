@@ -14,7 +14,7 @@ from service.views import (
 app_name = "service"
 
 urlpatterns = [
-    path("item/", ItemListView.as_view(), name="item-list"),
+    path("items/", ItemListView.as_view(), name="item-list"),
     path("item/<int:pk>/", ItemDetailView.as_view(), name="item-detail"),
     path("item/create/", ItemCreateView.as_view(), name="item-create"),
     path("item/<int:pk>/update/", ItemUpdateView.as_view(), name="item-update"),
