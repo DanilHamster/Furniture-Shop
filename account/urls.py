@@ -12,7 +12,7 @@ from account.views import (
     ProfileUpdateView,
     OrderDeleteView,
     OrderListView,
-    OrderInfoDeleteView,
+
 )
 
 app_name = "accounts"
@@ -48,9 +48,5 @@ urlpatterns = [
         name="order-delete",
     ),
     path("admin/order_list/", OrderListView.as_view(), name="order-list"),
-    path(
-        "admin/<int:pk>/del_buy/",
-        OrderInfoDeleteView.as_view(),
-        name="order-del",
-    ),
+
 ]

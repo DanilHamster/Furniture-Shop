@@ -87,7 +87,7 @@ class OrderDeleteView(generic.DeleteView):
     model = Order
 
     def get_success_url(self):
-        return reverse_lazy("accounts:account-profile")
+        return reverse_lazy("accounts:order-list")
 
 
 class AddToCartView(View):
@@ -226,8 +226,3 @@ class OrderListView(generic.ListView):
             item.item_name = item_map.get(item.item_id, "Unknown item")
 
         return context
-
-
-class OrderInfoDeleteView(generic.DeleteView):
-    model = Order
-    success_url = reverse_lazy("accounts:order-list")

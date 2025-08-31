@@ -61,13 +61,6 @@
                   🕒 Order Date: <strong>{{ order.created_at|date:"j F, Y, H:i" }}</strong><br>
 
                 </div>
-                <form method="post" action="{% url 'accounts:order-delete' order.id %}" class="mt-2">
-                  {% csrf_token %}
-                  <button type="button" class="btn btn-sm btn-outline-danger rounded-pill"
-                          data-bs-toggle="modal" data-bs-target="#deleteModal{{ order.id }}">
-                    🗑️ Delete
-                  </button>
-                </form>
               </div>
             </div>
           {% empty %}
@@ -77,27 +70,4 @@
       </div>
     </div>
   {% endif %}
-  {% for last_buy in user.order.all %}
-    <div class="modal fade" id="deleteModal{{ last_buy.id }}" tabindex="-1"
-         aria-labelledby="deleteModalLabel{{ last_buy.id }}" aria-hidden="true">
-      <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h5 class="modal-title" id="deleteModalLabel{{ last_buy.id }}">Confirm delete</h5>
-            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-          </div>
-          <div class="modal-body">
-            Are you sure you want to delete <strong>{{ last_buy.item_name }}</strong> from your purchase history?
-          </div>
-          <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-            <form method="post" action="{% url 'accounts:order-delete' last_buy.id %}">
-              {% csrf_token %}
-              <button type="submit" class="btn btn-danger">Yes, delete</button>
-            </form>
-          </div>
-        </div>
-      </div>
-    </div>
-  {% endfor %}
 {% endblock %}
