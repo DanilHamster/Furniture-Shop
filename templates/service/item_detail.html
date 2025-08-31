@@ -85,7 +85,7 @@
       <hr class="my-5 border-light">
       <div class="item-comments">
         <h4 class="text-warning fw-semibold mb-4">💬 Comments</h4>
-        {% for comment in item.comment.all|dictsortreversed:"create" %}
+        {% for comment in item.comment.all|dictsortreversed:"created_at" %}
           <div class="mb-4 p-3 rounded-4 bg-light text-dark shadow-sm">
             <p class="mb-1">
               <strong class="fw-semibold">
@@ -95,7 +95,7 @@
                 {% endif %}
               </strong>: {{ comment.text }}
             </p>
-            <p class="text-muted small mb-2">Posted on: {{ comment.create|date:"F j, Y, H:i" }}</p>
+            <p class="text-muted small mb-2">Posted on: {{ comment.created_at|date:"F j, Y, H:i" }}</p>
             {% if comment.user == user or user.is_superuser %}
               <form method="post" action="{% url 'service:comment-del' comment.id %}" class="d-inline">
                 {% csrf_token %}

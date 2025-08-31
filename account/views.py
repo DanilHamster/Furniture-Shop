@@ -4,7 +4,7 @@ from django.shortcuts import get_object_or_404
 from django.urls import reverse_lazy
 
 from account.forms import CartItemForm, UserProfileUpdateForm, BuyForm
-from account.models import User, Cart, CartItem, Buy, LastBuyItem
+from account.models import User, Cart, CartItem, Order, LastBuyItem
 from service.models import Item
 import logging
 from base64 import urlsafe_b64encode
@@ -50,7 +50,7 @@ class CartItemUpdateView(generic.UpdateView):
 
 class BuyFormView(generic.FormView):
     form_class = BuyForm
-    model = Buy
+    model = Order
     template_name = "accounts/buy_form.html"
 
     def form_valid(self, form):
@@ -73,8 +73,7 @@ class BuyFormView(generic.FormView):
             item.item.count = max(item.item.count - item.quantity, 0)
             item.item.save()
 
-            Buy.objects.create(
-                cvv="***",
+            Order.objects.create(
                 card_number=mask_card,
                 phone_number=phone,
                 user=user,
@@ -209,12 +208,12 @@ class ProfileUpdateView(generic.UpdateView):
 
 
 class BuyListView(generic.ListView):
-    model = Buy
+    model = Order
     template_name = "accounts/buy_list.html"
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        buy_list = context["buy_list"]
+        buy_list = context["order_list"]
 
         item_map = {
             item.id: item.name
@@ -228,5 +227,5 @@ class BuyListView(generic.ListView):
 
 
 class BuyInfoDeleteView(generic.DeleteView):
-    model = Buy
+    model = Order
     success_url = reverse_lazy("accounts:buy-list")

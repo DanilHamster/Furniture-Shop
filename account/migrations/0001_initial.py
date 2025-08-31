@@ -30,7 +30,7 @@ class Migration(migrations.Migration):
                     ),
                 ),
                 ("text", models.CharField(blank=True, max_length=255, null=True)),
-                ("create", models.DateTimeField(auto_now_add=True)),
+                ("created_at", models.DateTimeField(auto_now_add=True)),
             ],
         ),
         migrations.CreateModel(
@@ -206,7 +206,6 @@ class Migration(migrations.Migration):
                 ("item_price", models.DecimalField(decimal_places=2, max_digits=10)),
                 ("phone_number", models.CharField(max_length=18)),
                 ("card_number", models.CharField(max_length=16)),
-                ("cvv", models.CharField(max_length=3)),
                 ("created_at", models.DateTimeField(auto_now_add=True)),
                 ("status", models.BooleanField(default=False)),
                 (

@@ -1,5 +1,5 @@
 import pytest
-from account.models import User, Cart, CartItem, Buy, LastBuyItem, Comment
+from account.models import User, Cart, CartItem, Order, LastBuyItem, Comment
 from service.models import Item, ItemClass, Color
 
 
@@ -61,7 +61,7 @@ def test_cart_item_str(cart_item):
 
 @pytest.mark.django_db
 def test_buy_total_price(user, cart, item):
-    buy = Buy.objects.create(
+    order = Order.objects.create(
         user=user,
         cart=cart,
         item_id=item.pk,
@@ -69,10 +69,9 @@ def test_buy_total_price(user, cart, item):
         item_price=item.price,
         phone_number="+380931234567",
         card_number="**** **** **** 1234",
-        cvv="***",
         status=True,
     )
-    assert buy.get_total_price == 300
+    assert order.get_total_price == 300
 
 
 @pytest.mark.django_db

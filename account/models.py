@@ -1,5 +1,3 @@
-from tkinter.constants import CASCADE
-
 from django.conf import settings
 from django.contrib.auth.models import AbstractUser
 from django.db import models
@@ -38,7 +36,7 @@ class User(AbstractUser):
 class Comment(models.Model):
     text = models.CharField(max_length=255, blank=True, null=True)
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="comments")
-    create = models.DateTimeField(auto_now_add=True)
+    created_at = models.DateTimeField(auto_now_add=True)
 
 
 class Cart(models.Model):
@@ -68,7 +66,7 @@ class CartItem(models.Model):
         return f"Sum for {self.quantity} × {self.item.name}: ${self.quantity * self.item.price:.2f}"
 
 
-class Buy(models.Model):
+class Order(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     item_id = models.IntegerField()
     item_quantity = models.IntegerField()
@@ -76,7 +74,6 @@ class Buy(models.Model):
     item_price = models.DecimalField(max_digits=10, decimal_places=2)
     phone_number = models.CharField(max_length=30)
     card_number = models.CharField(max_length=30)
-    cvv = models.CharField(max_length=3)
     created_at = models.DateTimeField(auto_now_add=True)
     status = models.BooleanField(default=False)
 

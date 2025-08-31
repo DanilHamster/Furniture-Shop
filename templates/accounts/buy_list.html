@@ -4,7 +4,7 @@
     <div class="container py-5">
       <h2 class="mb-4 text-light">🧾 Purchase History</h2>
 
-      {% for item in buy_list|dictsortreversed:"created_at" %}
+      {% for item in order_list|dictsortreversed:"created_at" %}
         <div class="p-4 mb-5 rounded shadow-lg" style="
           background-color: rgba(105,113,120,0.7);
           color: #f8f9fa;
@@ -35,7 +35,6 @@
               <p><strong>Total Price:</strong> <span class="text-success">${{ item.get_total_price }}</span></p>
               <p><strong>Phone:</strong> 📞 {{ item.phone_number }}</p>
               <p><strong>Card:</strong> 💳 {{ item.card_number }}</p>
-              <p><strong>CVV:</strong> ***</p>
               <p><strong>Date:</strong> 🕒 {{ item.created_at|date:"F j, Y, H:i" }}</p>
 
               <form method="post" action="{% url 'accounts:buy-del' item.id %}" class="mt-3">
