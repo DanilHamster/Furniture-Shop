@@ -37,7 +37,7 @@
               <p><strong>Card:</strong> 💳 {{ item.card_number }}</p>
               <p><strong>Date:</strong> 🕒 {{ item.created_at|date:"F j, Y, H:i" }}</p>
 
-              <form method="post" action="{% url 'accounts:buy-del' item.id %}" class="mt-3">
+              <form method="post" action="{% url 'accounts:order-del' item.id %}" class="mt-3">
                 {% csrf_token %}
                 <button type="submit" class="btn btn-outline-danger btn-sm rounded-pill px-4">
                   🗑️ Delete

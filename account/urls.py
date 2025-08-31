@@ -51,6 +51,6 @@ urlpatterns = [
     path(
         "admin/<int:pk>/del_buy/",
         OrderInfoDeleteView.as_view(),
-        name="buy-del",
+        name="order-del",
     ),
 ]
