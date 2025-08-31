@@ -228,4 +228,4 @@ class BuyListView(generic.ListView):
 
 class BuyInfoDeleteView(generic.DeleteView):
     model = Order
-    success_url = reverse_lazy("accounts:buy-list")
+    success_url = reverse_lazy("accounts:order-list")

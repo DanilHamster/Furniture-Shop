@@ -27,14 +27,14 @@ urlpatterns = [
     path("", include("django.contrib.auth.urls")),
     path("cart/<int:pk>/", CartAccountDetailView.as_view(), name="cart-acc"),
     path("cart/<int:pk>/item/update/", CartItemUpdateView.as_view(), name="cart-item"),
-    path("buy/", BuyFormView.as_view(), name="buy-form"),
-    path("add-to-cart/", AddToCartView.as_view(), name="add-to-cart"),
+    path("buy_form/", BuyFormView.as_view(), name="buy-form"),
+    path("add_to_cart/", AddToCartView.as_view(), name="add-to-cart"),
     path("item/<int:pk>/delete", CartItemDeleteView.as_view(), name="del-item"),
     path("profile/", ProfileView.as_view(), name="account-profile"),
     path("profile/update/", ProfileUpdateView.as_view(), name="account-profile-update"),
     path(
         "last_buy/<int:pk>/delete/", LastBuyDeleteView.as_view(), name="last-buy-delete"
     ),
-    path("admin/buy_list/", BuyListView.as_view(), name="buy-list"),
+    path("admin/order_list/", BuyListView.as_view(), name="order-list"),
     path("admin/<int:pk>/del_buy/", BuyInfoDeleteView.as_view(), name="buy-del"),
 ]
