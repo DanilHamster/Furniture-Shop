@@ -22,8 +22,8 @@
             <div class="col-md-6">
               <p><strong>User:</strong> {{ item.user }}</p>
               <p><strong>Item:</strong>
-                <a href="{% url 'service:item-detail' item.item_id %}" class="text-warning fw-bold">
-                  🧩 {{ item.item_name }} <small class="text-light">(ID: {{ item.item_id }})</small>
+                <a href="{% url 'service:item-detail' item.item.id %}" class="text-warning fw-bold">
+                  🧩 {{ item.item_name }} <small class="text-light">(ID: {{ item.item.id }})</small>
                 </a>
               </p>
               <p><strong>Quantity:</strong> {{ item.item_quantity }}</p>
@@ -31,7 +31,7 @@
             </div>
 
             <div class="col-md-6">
-              <p><strong>Item Price:</strong> <span class="text-info">${{ item.item_price }}</span></p>
+              <p><strong>Item Price:</strong> <span class="text-info">${{ item.item.price }}</span></p>
               <p><strong>Total Price:</strong> <span class="text-success">${{ item.get_total_price }}</span></p>
               <p><strong>Phone:</strong> 📞 {{ item.phone_number }}</p>
               <p><strong>Card:</strong> 💳 {{ item.card_number }}</p>

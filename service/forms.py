@@ -17,8 +17,12 @@ class SearchItemForm(forms.Form):
 
 
 class PriceFilterForm(forms.Form):
-    min_price = forms.DecimalField(required=False, label="Min price", decimal_places=2)
-    max_price = forms.DecimalField(required=False, label="Max price", decimal_places=2)
+    min_price = forms.DecimalField(
+        required=False, label="Min price", decimal_places=2
+    )
+    max_price = forms.DecimalField(
+        required=False, label="Max price", decimal_places=2
+    )
 
     def __init__(self, *args, **kwargs):
         min_value = kwargs.pop("min_value", None)
@@ -26,9 +30,13 @@ class PriceFilterForm(forms.Form):
         super().__init__(*args, **kwargs)
 
         if min_value is not None:
-            self.fields["min_price"].label = f"Min price ({round(min_value, 2)})"
+            self.fields["min_price"].label = (
+                f"Min price ({round(min_value, 2)})"
+            )
         if max_value is not None:
-            self.fields["max_price"].label = f"Max price ({round(max_value, 2)})"
+            self.fields["max_price"].label = (
+                f"Max price ({round(max_value, 2)})"
+            )
 
 
 class FilterClassForm(forms.Form):

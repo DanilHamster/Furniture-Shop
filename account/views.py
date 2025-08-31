@@ -4,7 +4,7 @@ from django.shortcuts import get_object_or_404
 from django.urls import reverse_lazy
 
 from account.forms import CartItemForm, UserProfileUpdateForm, BuyForm
-from account.models import User, Cart, CartItem, Order, LastBuyItem
+from account.models import User, Cart, CartItem, Order
 from service.models import Item
 import logging
 from base64 import urlsafe_b64encode
@@ -45,7 +45,9 @@ class CartItemUpdateView(generic.UpdateView):
     template_name = "accounts/cart_item_form.html"
 
     def get_success_url(self):
-        return reverse_lazy("accounts:cart-acc", kwargs={"pk": self.object.cart.id})
+        return reverse_lazy(
+            "accounts:cart-acc", kwargs={"pk": self.object.cart.id}
+        )
 
 
 class BuyFormView(generic.FormView):
@@ -62,35 +64,27 @@ class BuyFormView(generic.FormView):
         cart_items = cart.items.all()
 
         for item in cart_items:
-            LastBuyItem.objects.create(
-                user=user,
-                item_name=item.item.name,
-                price_was=item.item.price,
-                quantity=item.quantity,
-                item_id=item.item.pk,
-            )
-
-            item.item.count = max(item.item.count - item.quantity, 0)
-            item.item.save()
-
             Order.objects.create(
                 card_number=mask_card,
                 phone_number=phone,
                 user=user,
                 cart=cart,
-                item_id=item.item.pk,
-                item_price=item.item.price,
+                item=item.item,
+                frozen_price=item.item.price,
                 item_quantity=item.quantity,
                 status=True,
             )
+
+            item.item.count = max(item.item.count - item.quantity, 0)
+            item.item.save()
 
             item.delete()
 
         return redirect("index")
 
 
-class LastBuyDeleteView(generic.DeleteView):
-    model = LastBuyItem
+class OrderDeleteView(generic.DeleteView):
+    model = Order
 
     def get_success_url(self):
         return reverse_lazy("accounts:account-profile")
@@ -122,7 +116,9 @@ class CartItemDeleteView(generic.DeleteView):
     model = CartItem
 
     def get_success_url(self):
-        return reverse_lazy("accounts:cart-acc", kwargs={"pk": self.object.cart.id})
+        return reverse_lazy(
+            "accounts:cart-acc", kwargs={"pk": self.object.cart.id}
+        )
 
 
 class SignUpView(generic.CreateView):
@@ -150,7 +146,9 @@ class SignUpView(generic.CreateView):
                     {"url": url, "user": user},
                 )
 
-                email = EmailMessage(mail_subject, html_content, to=[user.email])
+                email = EmailMessage(
+                    mail_subject, html_content, to=[user.email]
+                )
                 email.content_subtype = "html"
 
                 email.send()
@@ -159,7 +157,9 @@ class SignUpView(generic.CreateView):
 
             return super().form_invalid(form)
 
-        return render(self.request, "registration/email_confirmation_sent.html")
+        return render(
+            self.request, "registration/email_confirmation_sent.html"
+        )
 
 
 class ActivateAccountView(View):
@@ -207,9 +207,9 @@ class ProfileUpdateView(generic.UpdateView):
         return self.request.user
 
 
-class BuyListView(generic.ListView):
+class OrderListView(generic.ListView):
     model = Order
-    template_name = "accounts/buy_list.html"
+    template_name = "accounts/order_list.html"
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -217,7 +217,9 @@ class BuyListView(generic.ListView):
 
         item_map = {
             item.id: item.name
-            for item in Item.objects.filter(id__in=[item.item_id for item in buy_list])
+            for item in Item.objects.filter(
+                id__in=[item.item_id for item in buy_list]
+            )
         }
 
         for item in buy_list:
@@ -226,6 +228,6 @@ class BuyListView(generic.ListView):
         return context
 
 
-class BuyInfoDeleteView(generic.DeleteView):
+class OrderInfoDeleteView(generic.DeleteView):
     model = Order
     success_url = reverse_lazy("accounts:order-list")

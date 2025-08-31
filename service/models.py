@@ -41,7 +41,9 @@ class Item(models.Model):
     item_class = models.ForeignKey(
         "ItemClass", on_delete=models.CASCADE, related_name="item_class"
     )
-    image = models.ImageField(null=True, blank=True, upload_to="items/itemphoto/")
+    image = models.ImageField(
+        null=True, blank=True, upload_to="items/itemphoto/"
+    )
     comment = models.ManyToManyField("account.Comment", related_name="items")
 
     class Meta:

@@ -1,5 +1,5 @@
 import pytest
-from account.models import User, Cart, CartItem, Order, LastBuyItem, Comment
+from account.models import User, Cart, CartItem, Order, Comment
 from service.models import Item, ItemClass, Color
 
 
@@ -60,27 +60,18 @@ def test_cart_item_str(cart_item):
 
 
 @pytest.mark.django_db
-def test_buy_total_price(user, cart, item):
+def test_order_total_price(user, cart, item):
     order = Order.objects.create(
         user=user,
         cart=cart,
         item_id=item.pk,
         item_quantity=3,
-        item_price=item.price,
+        frozen_price=item.price,
         phone_number="+380931234567",
         card_number="**** **** **** 1234",
         status=True,
     )
     assert order.get_total_price == 300
-
-
-@pytest.mark.django_db
-def test_last_buy_item_total(user):
-    last_buy = LastBuyItem.objects.create(
-        user=user, item_name="Chair", price_was=150, quantity=2, item_id=1
-    )
-    assert last_buy.get_total_price == 300
-    assert "Chair x2" in str(last_buy)
 
 
 @pytest.mark.django_db

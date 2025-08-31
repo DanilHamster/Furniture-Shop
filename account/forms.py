@@ -64,7 +64,8 @@ class BuyForm(forms.Form):
         label="Card Number",
         validators=[
             RegexValidator(
-                regex=r"^\d{16}$", message="Card number must contain exactly 16 digits"
+                regex=r"^\d{16}$",
+                message="Card number must contain exactly 16 digits",
             )
         ],
         widget=forms.TextInput(
@@ -113,7 +114,11 @@ class UserProfileUpdateForm(forms.ModelForm):
             validate_email(email)
         except ValidationError:
             raise ValidationError("Select correct email.")
-        if User.objects.exclude(pk=self.instance.pk).filter(email=email).exists():
+        if (
+            User.objects.exclude(pk=self.instance.pk)
+            .filter(email=email)
+            .exists()
+        ):
             raise ValidationError("This email used ")
         return email
 
@@ -121,7 +126,9 @@ class UserProfileUpdateForm(forms.ModelForm):
         avatar = self.cleaned_data.get("avatar")
         if avatar:
             if avatar.size > 4 * 1024 * 1024:
-                raise ValidationError("Size of image must be 1024*1024 and  4MB.")
+                raise ValidationError(
+                    "Size of image must be 1024*1024 and  4MB."
+                )
         return avatar
 
     def clean_first_name(self):

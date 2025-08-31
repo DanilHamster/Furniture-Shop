@@ -20,7 +20,9 @@ def item_class(db):
 
 @pytest.fixture
 def comment(db, django_user_model):
-    user = django_user_model.objects.create_user(username="hamster", password="pass")
+    user = django_user_model.objects.create_user(
+        username="hamster", password="pass"
+    )
     return Comment.objects.create(user=user, text="Nice item!")
 
 

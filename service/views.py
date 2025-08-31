@@ -4,7 +4,12 @@ from django.urls.base import reverse_lazy
 from django.views import generic
 from django.views.generic.edit import FormMixin
 from account.models import Comment
-from service.forms import SearchItemForm, PriceFilterForm, FilterClassForm, CommentForm
+from service.forms import (
+    SearchItemForm,
+    PriceFilterForm,
+    FilterClassForm,
+    CommentForm,
+)
 from service.models import Item, ItemClass
 
 
@@ -24,9 +29,9 @@ class ItemListView(generic.ListView):
     paginate_by = 9
 
     def get_queryset(self):
-        queryset = Item.objects.select_related("color", "item_class").prefetch_related(
-            "material", "comment"
-        )
+        queryset = Item.objects.select_related(
+            "color", "item_class"
+        ).prefetch_related("material", "comment")
         self.search_form = SearchItemForm(self.request.GET)
         self.filter_form = PriceFilterForm(self.request.GET)
         self.class_filter = FilterClassForm(self.request.GET)
@@ -84,7 +89,9 @@ class ItemDetailView(FormMixin, generic.DetailView):
     form_class = CommentForm
 
     def get_success_url(self):
-        return reverse_lazy("service:item-detail", kwargs={"pk": self.kwargs["pk"]})
+        return reverse_lazy(
+            "service:item-detail", kwargs={"pk": self.kwargs["pk"]}
+        )
 
     def post(self, request, *args, **kwargs):
         self.object = self.get_object()

@@ -1,6 +1,6 @@
 import pytest
 from django.urls import reverse
-from account.models import Cart, CartItem, Buy, LastBuyItem
+from account.models import Cart, CartItem
 from service.models import Item, ItemClass, Color
 from django.contrib.auth import get_user_model
 
@@ -49,7 +49,9 @@ def cart_item(db, cart, item):
 @pytest.mark.django_db
 def test_add_to_cart_view(client, user, item):
     client.force_login(user)
-    response = client.post(reverse("accounts:add-to-cart"), data={"item_id": item.pk})
+    response = client.post(
+        reverse("accounts:add-to-cart"), data={"item_id": item.pk}
+    )
     assert response.status_code == 302
     assert CartItem.objects.filter(item=item, cart__user=user).exists()
 
@@ -79,29 +81,3 @@ def test_cart_item_delete_view(client, user, cart_item):
     response = client.post(url)
     assert response.status_code == 302
     assert not CartItem.objects.filter(pk=cart_item.pk).exists()
-
-
-@pytest.mark.django_db
-def test_buy_form_creates_buy_and_clears_cart(client, user, item, cart):
-    CartItem.objects.create(cart=cart, item=item, quantity=2)
-    client.force_login(user)
-    response = client.post(
-        reverse("accounts:buy-form"),
-        data={
-            "phone_number": "+380666666666",
-            "card_number": "1234123412341234",
-            "cvv": "123",
-        },
-    )
-    assert response.status_code == 302
-    assert Buy.objects.count() == 1
-    assert CartItem.objects.count() == 0
-    assert LastBuyItem.objects.count() == 1
-
-
-@pytest.mark.django_db
-def test_profile_view(client, user):
-    client.force_login(user)
-    response = client.get(reverse("accounts:account-profile"))
-    assert response.status_code == 200
-    assert response.context_data["user"] == user

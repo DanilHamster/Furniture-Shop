@@ -153,3 +153,5 @@ cython_debug/
 marimo/_static/
 marimo/_lsp/
 __marimo__/
+/s/
+/pyproject.toml

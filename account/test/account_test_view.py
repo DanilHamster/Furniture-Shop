@@ -107,7 +107,11 @@ def test_buy_form_invalid_card():
 def test_user_profile_update_form_valid(user):
     form = UserProfileUpdateForm(
         instance=user,
-        data={"first_name": "ham", "last_name": "ster", "email": "hamster@example.com"},
+        data={
+            "first_name": "ham",
+            "last_name": "ster",
+            "email": "hamster@example.com",
+        },
     )
     assert form.is_valid()
     cleaned = form.cleaned_data
@@ -122,7 +126,11 @@ def test_user_profile_update_form_duplicate_email(user):
     )
     form = UserProfileUpdateForm(
         instance=user,
-        data={"first_name": "Test", "last_name": "User", "email": "used@example.com"},
+        data={
+            "first_name": "Test",
+            "last_name": "User",
+            "email": "used@example.com",
+        },
     )
     assert not form.is_valid()
     assert "email" in form.errors
@@ -134,7 +142,11 @@ def test_user_profile_update_form_avatar_too_large(user):
     )
     form = UserProfileUpdateForm(
         instance=user,
-        data={"first_name": "Test", "last_name": "User", "email": "test@example.com"},
+        data={
+            "first_name": "Test",
+            "last_name": "User",
+            "email": "test@example.com",
+        },
         files={"avatar": big_avatar},
     )
     assert not form.is_valid()

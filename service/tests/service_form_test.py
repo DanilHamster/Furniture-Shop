@@ -1,5 +1,10 @@
 import pytest
-from service.forms import SearchItemForm, PriceFilterForm, FilterClassForm, CommentForm
+from service.forms import (
+    SearchItemForm,
+    PriceFilterForm,
+    FilterClassForm,
+    CommentForm,
+)
 from service.models import ItemClass
 from account.models import Comment
 from django.contrib.auth import get_user_model

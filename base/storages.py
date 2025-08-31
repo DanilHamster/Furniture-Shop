@@ -18,7 +18,9 @@ class WindowsCompatibleDropboxStorage(DropboxStorage):
         root = self.root_path.strip("/\\") if self.root_path else ""
 
         full_path = (
-            os.path.join("/", root, name) if os.name == "nt" else f"/{root}/{name}"
+            os.path.join("/", root, name)
+            if os.name == "nt"
+            else f"/{root}/{name}"
         )
         return full_path.replace("\\", "/").replace("//", "/")
 
