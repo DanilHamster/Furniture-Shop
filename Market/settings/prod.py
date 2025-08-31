@@ -1,8 +1,8 @@
 from .base import *
 
-DEBUG = True
+DEBUG = False
 
-ALLOWED_HOSTS = ["hamster-shop.onrender.com", "127.0.0.1",]
+ALLOWED_HOSTS = ["hamster-shop.onrender.com", "127.0.0.1", "localhost"]
 
 
 RENDER_EXTERNAL_HOSTNAME = os.environ.get("RENDER_EXTERNAL_HOSTNAME")
