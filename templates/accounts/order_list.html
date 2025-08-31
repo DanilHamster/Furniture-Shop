@@ -36,12 +36,31 @@
               <p><strong>Phone:</strong> 📞 {{ item.phone_number }}</p>
               <p><strong>Card:</strong> 💳 {{ item.card_number }}</p>
               <p><strong>Date:</strong> 🕒 {{ item.created_at|date:"F j, Y, H:i" }}</p>
+              <button type="button" class="btn btn-outline-danger btn-sm rounded-pill px-4" data-bs-toggle="modal"
+                      data-bs-target="#deleteModal{{ item.id }}">
+                🗑️ Delete
+              </button>
+            </div>
+          </div>
+        </div>
 
-              <form method="post" action="{% url 'accounts:order-delete' item.id %}" class="mt-3">
+
+        <div class="modal fade" id="deleteModal{{ item.id }}" tabindex="-1" aria-labelledby="deleteModalLabel{{ item.id }}" aria-hidden="true">
+          <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content bg-dark text-light">
+              <div class="modal-header">
+                <h5 class="modal-title" id="deleteModalLabel{{ item.id }}">Confirm Deletion</h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+              </div>
+              <div class="modal-body">
+                Are you sure you want to delete <strong>Purchase #{{ item.id }}</strong> for <strong>{{ item.item_name }}</strong>?
+              </div>
+              <form method="post" action="{% url 'accounts:order-delete' item.id %}">
                 {% csrf_token %}
-                <button type="submit" class="btn btn-outline-danger btn-sm rounded-pill px-4">
-                  🗑️ Delete
-                </button>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                  <button type="submit" class="btn btn-danger">Yes, delete</button>
+                </div>
               </form>
             </div>
           </div>
