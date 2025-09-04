@@ -99,7 +99,7 @@ Username: admin
 Password: superadmin
 ```
 
-✅ Default admin credentials:
+✅ Default user credentials:
 ```
 Username: user1
 Password: bestpassword1
